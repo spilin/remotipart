@@ -170,6 +170,13 @@
       addedFields.push($("<input type='hidden' name='X-Http-Accept'>")
         .attr("value", accepts).appendTo(form));
 
+      // Rails 4 no longer includes authentication_token in hidden field. Instead it sets request header.
+      // We need to embed authenticity_token in IFrame.
+      var token = $('meta[name="csrf-token"]').attr('content');
+      if (token)
+        addedFields.push($("<input type='hidden' name='authenticity_token'>")
+          .attr("value", token).appendTo(form));
+
       return {
 
         // The `send` function is called by jQuery when the request should be
